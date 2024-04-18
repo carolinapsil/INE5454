@@ -1,4 +1,4 @@
-from billboard import extract_charts
+from src.billboard import extract_charts
 
 if __name__ == '__main__':
     extract_charts()
