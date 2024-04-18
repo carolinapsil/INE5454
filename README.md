@@ -1,4 +1,4 @@
-### Used packages
+### Get started
 
 #### For dynamic web pages scraping
 - pip install selenium (https://pypi.org/project/selenium/)
