@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 from src.models.chart_row import ChartRow
-from src.models.song_status import SongStatus
+from src.utils.scraping_parse_utils import parse_song_status, parse_song_award
 
 
 def extract_charts():
@@ -30,27 +30,25 @@ def extract_charts():
 
         song_name = chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/h3').text
         artist_name = chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/span').text
+
+        song_status_li = chart_row.find_element(By.XPATH, './li[4]/ul/li[3]')
+        try:
+            award = parse_song_award(song_status_li.find_element(By.TAG_NAME, 'g').get_attribute('data-name'))
+        except NoSuchElementException:
+            try:
+                award = parse_song_award(song_status_li.find_element(By.TAG_NAME, 'path').get_attribute('data-name'))
+            except NoSuchElementException:
+                award = parse_song_award('')
+
         last_week = chart_row.find_element(By.XPATH, './li[4]/ul/li[4]/span').text
         peak_pos = chart_row.find_element(By.XPATH, './li[4]/ul/li[5]/span').text
         weeks_on_chart = chart_row.find_element(By.XPATH, './li[4]/ul/li[6]/span').text
 
         charts.append(
-            ChartRow(pos, artist_photo_url, song_status, song_name, artist_name, last_week, peak_pos, weeks_on_chart, page_url).to_dict()
+            ChartRow(pos, artist_photo_url, song_status, song_name, artist_name, award, last_week, peak_pos, weeks_on_chart, page_url).to_dict()
         )
 
     df = pd.DataFrame(charts)
     df.to_json('generated/charts.json', orient='records', indent=2)
 
     driver.quit()
-
-
-def parse_song_status(raw_text: str) -> SongStatus:
-    enum_map = {
-        'Group 7170': SongStatus.UP,
-        'Group 7171': SongStatus.DOWN,
-        'Group 3': SongStatus.KEEP,
-        'NEW': SongStatus.NEW,
-        'RE- ENTRY': SongStatus.RE_ENTRY,
-    }
-
-    return enum_map[raw_text]
