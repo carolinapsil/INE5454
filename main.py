@@ -1,4 +1,4 @@
-from src.billboard import extract_charts
+from src.billboard import extract_from_billboard
 
 if __name__ == '__main__':
-    extract_charts()
+    extract_from_billboard()
