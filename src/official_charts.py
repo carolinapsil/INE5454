@@ -1,12 +1,10 @@
 import pandas as pd
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 from src.models.chart_row import ChartRow
-from src.utils.scraping_parse_utils import parse_song_status, parse_song_award
 
 
 def extract_official_charts():
@@ -37,7 +35,9 @@ def extract_official_charts():
 
         award = 'null'
         charts.append(
-            ChartRow(pos, artist_photo_url, song_status, song_name, artist_name, award, last_week, peak_pos, weeks_on_chart,
+            ChartRow('official_charts', 0, pos, artist_photo_url, song_status, song_name, artist_name, award, last_week,
+                     peak_pos,
+                     weeks_on_chart,
                      official_page_url).to_dict()
         )
 
