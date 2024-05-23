@@ -1,8 +1,6 @@
 class ChartRow:
-    def __init__(self, chart_site, week_number, pos, artist_photo_url, song_status, song_name, artist_name, award, last_week, peak_pos,
+    def __init__(self, pos, artist_photo_url, song_status, song_name, artist_name, award, last_week, peak_pos,
                  weeks_on_chart, page_url):
-        self.chart_site = chart_site
-        self.week_number = week_number
         self.pos = pos
         self.artist_photo_url = artist_photo_url
         self.song_status = song_status
@@ -16,8 +14,6 @@ class ChartRow:
 
     def to_dict(self):
         return {
-            'chart_site': self.chart_site,
-            'week_number': self.week_number,
             'pos': self.pos,
             'artist_photo_url': self.artist_photo_url,
             'song_status': self.song_status,
