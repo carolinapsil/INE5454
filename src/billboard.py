@@ -9,11 +9,11 @@ from src.models.chart_row import ChartRow
 from src.utils.scraping_parse_utils import parse_song_status, parse_song_award
 
 
-def extract_charts():
-    page_url = 'https://www.billboard.com/charts/hot-100/'
+def extract_billboard_charts():
+    billboard_page_url = 'https://www.billboard.com/charts/hot-100/'
 
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    driver.get(page_url)
+    driver.get(billboard_page_url)
 
     chart_rows = driver.find_elements(By.CLASS_NAME, 'o-chart-results-list-row')
 
@@ -45,7 +45,7 @@ def extract_charts():
         weeks_on_chart = chart_row.find_element(By.XPATH, './li[4]/ul/li[6]/span').text
 
         charts.append(
-            ChartRow(pos, artist_photo_url, song_status, song_name, artist_name, award, last_week, peak_pos, weeks_on_chart, page_url).to_dict()
+            ChartRow(pos, artist_photo_url, song_status, song_name, artist_name, award, last_week, peak_pos, weeks_on_chart, billboard_page_url).to_dict()
         )
 
     df = pd.DataFrame(charts)
