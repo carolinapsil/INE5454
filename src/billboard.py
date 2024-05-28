@@ -9,10 +9,10 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 from src.models.chart_row import ChartRow
-from src.utils.scraping_parse_utils import parse_song_status, parse_song_award
+from src.utils.scraping_parse_utils import parse_song_status_billboard, parse_song_award
 
 
-def extract_billboard_charts():
+def extract_billboard_charts() -> DataFrame:
     billboard_hot100_url = 'https://www.billboard.com/charts/hot-100'
     today = datetime.now()
 
@@ -28,9 +28,7 @@ def extract_billboard_charts():
     df_week_4 = extract_charts(page_url=f'{billboard_hot100_url}/{week_4}', week_number=4)
     df_week_5 = extract_charts(page_url=f'{billboard_hot100_url}/{week_5}', week_number=5)
 
-    df_final = pd.concat([df_week_1, df_week_2, df_week_3, df_week_4, df_week_5], ignore_index=True)
-
-    df_final.to_json('generated/charts.json', orient='records', indent=2)
+    return pd.concat([df_week_1, df_week_2, df_week_3, df_week_4, df_week_5], ignore_index=True)
 
 
 def extract_charts(page_url, week_number) -> DataFrame:
@@ -46,9 +44,13 @@ def extract_charts(page_url, week_number) -> DataFrame:
 
         song_status_li = chart_row.find_element(By.XPATH, './li[3]')
         try:
-            song_status = parse_song_status(song_status_li.find_element(By.TAG_NAME, 'g').get_attribute('data-name'))
+            song_status = parse_song_status_billboard(
+                song_status_li.find_element(By.TAG_NAME, 'g').get_attribute('data-name')
+            )
         except NoSuchElementException:
-            song_status = parse_song_status(song_status_li.find_element(By.TAG_NAME, 'span').text)
+            song_status = parse_song_status_billboard(
+                song_status_li.find_element(By.TAG_NAME, 'span').text
+            )
 
         song_name = chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/h3').text
         artist_name = chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/span').text

@@ -2,7 +2,7 @@ from src.models.award import Award
 from src.models.song_status import SongStatus
 
 
-def parse_song_status(raw_text: str) -> str:
+def parse_song_status_billboard(raw_text: str) -> str:
     enum_map = {
         'Group 7170': SongStatus.UP.value,
         'Group 7171': SongStatus.DOWN.value,
@@ -15,15 +15,16 @@ def parse_song_status(raw_text: str) -> str:
 
 
 def parse_song_status_uk(raw_text: str) -> str:
-    enum_map = {
-        'movement-icon': SongStatus.KEEP.value,
-        'movement-up': SongStatus.UP.value,
-        'movement-down': SongStatus.DOWN.value,
-        'NEW': SongStatus.NEW.value,
-        'RE': SongStatus.RE_ENTRY.value,
-    }
+    if 'movement-up' in raw_text:
+        return SongStatus.UP.value
+    if 'movement-down' in raw_text:
+        return SongStatus.DOWN.value
+    if 'NEW' in raw_text:
+        return SongStatus.NEW.value
+    if 'RE' in raw_text:
+        return SongStatus.RE_ENTRY.value
 
-    return enum_map[raw_text]
+    return SongStatus.KEEP.value
 
 
 def parse_song_award(raw_text: str) -> str:
