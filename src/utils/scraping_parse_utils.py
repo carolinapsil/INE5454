@@ -14,6 +14,18 @@ def parse_song_status(raw_text: str) -> str:
     return enum_map[raw_text]
 
 
+def parse_song_status_uk(raw_text: str) -> str:
+    enum_map = {
+        'movement-icon': SongStatus.KEEP.value,
+        'movement-up': SongStatus.UP.value,
+        'movement-down': SongStatus.DOWN.value,
+        'NEW': SongStatus.NEW.value,
+        'RE': SongStatus.RE_ENTRY.value,
+    }
+
+    return enum_map[raw_text]
+
+
 def parse_song_award(raw_text: str) -> str:
     enum_map = {
         '': Award.NOTHING.value,
