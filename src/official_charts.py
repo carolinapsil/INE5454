@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 
 import pandas as pd
@@ -31,6 +32,8 @@ def extract_official_charts() -> DataFrame:
 
 
 def extract_charts(page_url, week_number) -> DataFrame:
+    time.sleep(5)
+
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.get(page_url)
 
@@ -64,4 +67,5 @@ def extract_charts(page_url, week_number) -> DataFrame:
                      page_url).to_dict()
         )
 
+    driver.close()
     return pd.DataFrame(charts)
