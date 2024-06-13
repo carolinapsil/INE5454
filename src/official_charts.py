@@ -1,4 +1,3 @@
-import time
 from datetime import datetime, timedelta
 
 import pandas as pd
@@ -22,7 +21,7 @@ def extract_official_charts() -> DataFrame:
     week_4 = (today - timedelta(days=21)).strftime('%Y%m%d')
     week_5 = (today - timedelta(days=28)).strftime('%Y%m%d')
 
-    df_week_1 = extract_charts(page_url=f'{official_page_url}/{week_1}/7501/', week_number=1)
+    df_week_1 = extract_charts(page_url=official_page_url, week_number=1)
     df_week_2 = extract_charts(page_url=f'{official_page_url}/{week_2}/7501/', week_number=2)
     df_week_3 = extract_charts(page_url=f'{official_page_url}/{week_3}/7501/', week_number=3)
     df_week_4 = extract_charts(page_url=f'{official_page_url}/{week_4}/7501/', week_number=4)
@@ -32,7 +31,6 @@ def extract_official_charts() -> DataFrame:
 
 
 def extract_charts(page_url, week_number) -> DataFrame:
-    time.sleep(5)
 
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.get(page_url)
@@ -67,5 +65,4 @@ def extract_charts(page_url, week_number) -> DataFrame:
                      page_url).to_dict()
         )
 
-    driver.close()
     return pd.DataFrame(charts)
