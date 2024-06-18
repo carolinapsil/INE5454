@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
+from src.models.award import Award
 from src.models.chart_row import ChartRow
 from src.utils.scraping_parse_utils import parse_song_status_uk
 from src.utils.string_utils import capitalize_initials
@@ -58,7 +59,7 @@ def extract_charts(page_url, week_number) -> DataFrame:
         peak_pos = chart_row.find_element(By.XPATH, './div[1]/div[2]/div/ol/li[2]/span[1]').text
         weeks_on_chart = chart_row.find_element(By.XPATH, './div[1]/div[2]/div/ol/li[3]/span').text
 
-        award = 'No Award'
+        award = Award.NO_AWARD.value
         charts.append(
             ChartRow('official_charts', week_number, pos, artist_photo_url, song_status, song_name, artist_name, award, last_week,
                      peak_pos,
