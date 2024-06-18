@@ -10,6 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from src.models.chart_row import ChartRow
 from src.utils.scraping_parse_utils import parse_song_status_billboard, parse_song_award
+from src.utils.string_utils import capitalize_initials
 
 
 def extract_billboard_charts() -> DataFrame:
@@ -52,8 +53,8 @@ def extract_charts(page_url, week_number) -> DataFrame:
                 song_status_li.find_element(By.TAG_NAME, 'span').text
             )
 
-        song_name = chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/h3').text
-        artist_name = chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/span').text
+        song_name = capitalize_initials(chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/h3').text)
+        artist_name = capitalize_initials(chart_row.find_element(By.XPATH, './li[4]/ul/li[1]/span').text)
 
         song_status_li = chart_row.find_element(By.XPATH, './li[4]/ul/li[3]')
         try:

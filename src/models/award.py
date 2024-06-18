@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class Award(Enum):
-    NOTHING = '1'
-    PERFORMANCE_GAIN_ONLY = '2'
-    PERFORMANCE_GAIN_AND_ADDITIONAL_AWARD = '3'
+    NO_AWARD = 'No Award'
+    PERFORMANCE_GAIN_ONLY = 'Performance Gain'
+    PERFORMANCE_GAIN_AND_ADDITIONAL_AWARD = 'Performance Gain/Additional Award'

@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class SongStatus(Enum):
-    UP = '1'
-    DOWN = '2'
-    KEEP = '3'
-    NEW = '4'
-    RE_ENTRY = '5'
+    UP = 'Up'
+    DOWN = 'Down'
+    KEEP = 'Keep'
+    NEW = 'New'
+    RE_ENTRY = 'Re-entry'

@@ -29,7 +29,7 @@ def parse_song_status_uk(raw_text: str) -> str:
 
 def parse_song_award(raw_text: str) -> str:
     enum_map = {
-        '': Award.NOTHING.value,
+        '': Award.NO_AWARD.value,
         'Path 3055': Award.PERFORMANCE_GAIN_ONLY.value,
         'Group 7175': Award.PERFORMANCE_GAIN_AND_ADDITIONAL_AWARD.value
     }
