@@ -58,7 +58,7 @@ def extract_charts(page_url, week_number) -> DataFrame:
         peak_pos = chart_row.find_element(By.XPATH, './div[1]/div[2]/div/ol/li[2]/span[1]').text
         weeks_on_chart = chart_row.find_element(By.XPATH, './div[1]/div[2]/div/ol/li[3]/span').text
 
-        award = 'null'
+        award = 'No Award'
         charts.append(
             ChartRow('official_charts', week_number, pos, artist_photo_url, song_status, song_name, artist_name, award, last_week,
                      peak_pos,
