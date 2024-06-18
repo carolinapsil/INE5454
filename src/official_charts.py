@@ -15,7 +15,6 @@ def extract_official_charts() -> DataFrame:
     official_page_url = 'https://www.officialcharts.com/charts/singles-chart/'
     today = datetime.now()
 
-    week_1 = today.strftime('%Y%m%d')
     week_2 = (today - timedelta(days=7)).strftime('%Y%m%d')
     week_3 = (today - timedelta(days=14)).strftime('%Y%m%d')
     week_4 = (today - timedelta(days=21)).strftime('%Y%m%d')

@@ -16,7 +16,6 @@ def extract_billboard_charts() -> DataFrame:
     billboard_hot100_url = 'https://www.billboard.com/charts/hot-100'
     today = datetime.now()
 
-    week_1 = today.strftime('%Y-%m-%d')
     week_2 = (today - timedelta(days=7)).strftime('%Y-%m-%d')
     week_3 = (today - timedelta(days=14)).strftime('%Y-%m-%d')
     week_4 = (today - timedelta(days=21)).strftime('%Y-%m-%d')
