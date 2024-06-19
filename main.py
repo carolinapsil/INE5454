@@ -14,31 +14,59 @@ if __name__ == '__main__':
 
     df = pd.read_json('generated/charts.json')
 
-    bar_color = '#0000FF'
+    df_billboard = df[df['chart_site'] == 'billboard']
+    df_official_charts = df[df['chart_site'] == 'official_charts']
+
+    bar_color1 = '#0000FF'
+    bar_color2 = '#FF00FF'
     pie_colors = ['#0000FF', '#FF00FF', '#5A64FF', '#A2609A', '#FF5449']
     line_colors = ['#0000FF', '#FF00FF', '#5A64FF', '#A2609A', '#FF5449']
     plt.figure(figsize=(10, 6))
 
     # Set up the plotting area
-    fig, axs = plt.subplots(2, 2, figsize=(20, 25))
+    fig, axs = plt.subplots(4, 2, figsize=(20, 25))
 
-    # 1. Status Distribution
-    df_status_dist = df['song_status'].value_counts()
-    df_status_dist.plot(kind='pie', ax=axs[0, 0], title='Distribuição dos Status das Músicas', colors=pie_colors, autopct='%1.1f%%')
+    # 1. Status Distribution - Billboard
+    df_status_dist = df_billboard['song_status'].value_counts()
+    df_status_dist.plot(kind='pie', ax=axs[0, 0], title='Distribuição dos Status das Músicas (Billboard)', colors=pie_colors, autopct='%1.1f%%')
 
-    # 2. Song Award Distribution
-    df_award_dist = df['award'].value_counts()
-    df_award_dist.plot(kind='pie', ax=axs[0, 1], title='Distribuição dos Prêmios das Músicas', colors=pie_colors, autopct='%1.1f%%')
+    # 1. Status Distribution - Official Charts
+    df_status_dist = df_official_charts['song_status'].value_counts()
+    df_status_dist.plot(kind='pie', ax=axs[0, 1], title='Distribuição dos Status das Músicas (Official Charts)', colors=pie_colors, autopct='%1.1f%%')
 
-    # 3. Top Artists by Number of Songs
-    df_top_artists = df['artist_name'].value_counts().head(10)
-    df_top_artists.plot(kind='bar', ax=axs[1, 0], title='Top 10 Artistas por Quantidade de Músicas', color=[bar_color]*10)
+    # 2. Song Award Distribution - Billboard
+    df_award_dist = df_billboard['award'].value_counts()
+    df_award_dist.plot(kind='pie', ax=axs[1, 0], title='Distribuição dos Prêmios das Músicas (Billboard)', colors=pie_colors, autopct='%1.1f%%')
+    axs[1, 0].set_ylabel('')
+
+    # 2. Song Award Distribution - Official Charts
+    df_award_dist = df_official_charts['award'].value_counts()
+    df_award_dist.plot(kind='pie', ax=axs[1, 1], title='Distribuição dos Prêmios das Músicas (Official Charts)', colors=pie_colors, autopct='%1.1f%%')
+    axs[1, 1].set_ylabel('')
+
+    # 3. Top Artists by Number of Songs - Billboard
+    df_top_artists_billboard = df_billboard['artist_name'].value_counts().head(10)
+    df_top_artists_billboard.plot(kind='bar', ax=axs[1, 0], title='Top 10 Artistas por Quantidade de Músicas (Billboard)', color=[bar_color1]*10)
     axs[1, 0].set_xlabel('Nome do artista')
     axs[1, 0].set_ylabel('Quantidade de músicas')
+    axs[1, 0].set_ylim([0, 100])
 
-    # 4. Trends in Song Status Over Weeks
-    df_status_trend = df.groupby(['week_number', 'song_status']).size().unstack().fillna(0)
-    df_status_trend.plot(kind='line', ax=axs[1, 1], title='Evolução dos Status das Músicas', color=line_colors)
+    # 4. Top Artists by Number of Songs - Official Charts
+    df_top_artists_official_charts = df_official_charts['artist_name'].value_counts().head(10)
+    df_top_artists_official_charts.plot(kind='bar', ax=axs[1, 1], title='Top 10 Artistas por Quantidade de Músicas (Official Charts)', color=[bar_color2]*10)
+    axs[1, 1].set_xlabel('Nome do artista')
+    axs[1, 1].set_ylabel('Quantidade de músicas')
+    axs[1, 1].set_ylim([0, 100])
+
+    # 5. Trends in Song Status Over Weeks - Billboard
+    df_status_trend = df_billboard.groupby(['week_number', 'song_status']).size().unstack().fillna(0)
+    df_status_trend.plot(kind='line', ax=axs[1, 0], title='Evolução dos Status das Músicas (Billboard)', color=line_colors)
+    axs[1, 0].set_xlabel('Semana')
+    axs[1, 0].set_ylabel('Quantidade de músicas')
+
+    # 5. Trends in Song Status Over Weeks - Official Charts
+    df_status_trend = df_official_charts.groupby(['week_number', 'song_status']).size().unstack().fillna(0)
+    df_status_trend.plot(kind='line', ax=axs[1, 1], title='Evolução dos Status das Músicas (Official Charts)', color=line_colors)
     axs[1, 1].set_xlabel('Semana')
     axs[1, 1].set_ylabel('Quantidade de músicas')
 
